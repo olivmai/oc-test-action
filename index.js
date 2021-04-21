@@ -1,5 +1,6 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
+// const github = require('@actions/github');
+const glob = require('@actions/glob');
 const convert = require('xml-js');
 const fs = require('fs');
 
@@ -10,16 +11,20 @@ try {
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  // const payload = JSON.stringify(github.context.payload, undefined, 2)
+  // console.log(`The event payload: ${payload}`);
 
+  const patterns = ['coverage.xml']
+  const globber = glob.create(patterns)
+  const file = globber.glob()
   // try some code for real action
-  const xmlContent = fs.readFileSync('/github/workplace/coverage.xml', { encoding: 'utf8' });
+  const xmlContent = fs.readFileSync(file, { encoding: 'utf8' });
 
   var options = {ignoreComment: true, alwaysChildren: true};
   var result = convert.xml2js(xml, options);
 
-console.log(result);
+  console.log(result);
+
 } catch (error) {
   core.setFailed(error.message);
 }
