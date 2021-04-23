@@ -18,19 +18,15 @@ try {
   ///////////////////////////////////////////
 
   // @actions/glob allow to access files in the current job workplace. See: https://github.com/actions/toolkit/tree/main/packages/glob
-  const patterns = ['coverage.xml']
-  const globber = glob.create(patterns)
+  const globber = glob.create('coverage.xml')
   const file = globber.glob()
-  
-  // this shoul allow us to get file content
-  const xmlContent = fs.readFileSync(file, { encoding: 'utf8' });
 
   // xml-js extension should ease the process to convert xml content to JSObject or json. See: https://www.npmjs.com/package/xml-js
   var options = {ignoreComment: true, alwaysChildren: true};
-  var result = convert.xml2js(xml, options);
+  var json = convert.xml2js(fs.readFileSync(file, { encoding: 'utf8' }), options);
 
   // this result should be a JS object containing coverage infos
-  console.log(result);
+  console.log(json);
 
 } catch (error) {
   core.setFailed(error.message);

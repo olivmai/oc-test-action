@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 350:
+/***/ 604:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -15,7 +15,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const os = __importStar(__nccwpck_require__(87));
-const utils_1 = __nccwpck_require__(369);
+const utils_1 = __nccwpck_require__(245);
 /**
  * Commands
  *
@@ -87,7 +87,7 @@ function escapeProperty(s) {
 
 /***/ }),
 
-/***/ 24:
+/***/ 127:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -109,9 +109,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const command_1 = __nccwpck_require__(350);
-const file_command_1 = __nccwpck_require__(466);
-const utils_1 = __nccwpck_require__(369);
+const command_1 = __nccwpck_require__(604);
+const file_command_1 = __nccwpck_require__(352);
+const utils_1 = __nccwpck_require__(245);
 const os = __importStar(__nccwpck_require__(87));
 const path = __importStar(__nccwpck_require__(622));
 /**
@@ -333,7 +333,7 @@ exports.getState = getState;
 
 /***/ }),
 
-/***/ 466:
+/***/ 352:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -351,7 +351,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(747));
 const os = __importStar(__nccwpck_require__(87));
-const utils_1 = __nccwpck_require__(369);
+const utils_1 = __nccwpck_require__(245);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
@@ -369,7 +369,7 @@ exports.issueCommand = issueCommand;
 
 /***/ }),
 
-/***/ 369:
+/***/ 245:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -395,7 +395,7 @@ exports.toCommandValue = toCommandValue;
 
 /***/ }),
 
-/***/ 723:
+/***/ 916:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -410,7 +410,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const internal_globber_1 = __nccwpck_require__(581);
+const internal_globber_1 = __nccwpck_require__(728);
 /**
  * Constructs a globber
  *
@@ -427,7 +427,7 @@ exports.create = create;
 
 /***/ }),
 
-/***/ 897:
+/***/ 935:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -440,7 +440,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(24));
+const core = __importStar(__nccwpck_require__(127));
 /**
  * Returns a copy with defaults filled in.
  */
@@ -471,7 +471,7 @@ exports.getOptions = getOptions;
 
 /***/ }),
 
-/***/ 581:
+/***/ 728:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -512,14 +512,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(24));
+const core = __importStar(__nccwpck_require__(127));
 const fs = __importStar(__nccwpck_require__(747));
-const globOptionsHelper = __importStar(__nccwpck_require__(897));
+const globOptionsHelper = __importStar(__nccwpck_require__(935));
 const path = __importStar(__nccwpck_require__(622));
-const patternHelper = __importStar(__nccwpck_require__(676));
-const internal_match_kind_1 = __nccwpck_require__(119);
-const internal_pattern_1 = __nccwpck_require__(339);
-const internal_search_state_1 = __nccwpck_require__(1);
+const patternHelper = __importStar(__nccwpck_require__(455));
+const internal_match_kind_1 = __nccwpck_require__(81);
+const internal_pattern_1 = __nccwpck_require__(919);
+const internal_search_state_1 = __nccwpck_require__(973);
 const IS_WINDOWS = process.platform === 'win32';
 class DefaultGlobber {
     constructor(options) {
@@ -700,7 +700,7 @@ exports.DefaultGlobber = DefaultGlobber;
 
 /***/ }),
 
-/***/ 119:
+/***/ 81:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -724,7 +724,7 @@ var MatchKind;
 
 /***/ }),
 
-/***/ 11:
+/***/ 131:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -916,7 +916,7 @@ exports.safeTrimTrailingSeparator = safeTrimTrailingSeparator;
 
 /***/ }),
 
-/***/ 288:
+/***/ 12:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -933,7 +933,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const path = __importStar(__nccwpck_require__(622));
-const pathHelper = __importStar(__nccwpck_require__(11));
+const pathHelper = __importStar(__nccwpck_require__(131));
 const assert_1 = __importDefault(__nccwpck_require__(357));
 const IS_WINDOWS = process.platform === 'win32';
 /**
@@ -1023,7 +1023,7 @@ exports.Path = Path;
 
 /***/ }),
 
-/***/ 676:
+/***/ 455:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -1036,8 +1036,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const pathHelper = __importStar(__nccwpck_require__(11));
-const internal_match_kind_1 = __nccwpck_require__(119);
+const pathHelper = __importStar(__nccwpck_require__(131));
+const internal_match_kind_1 = __nccwpck_require__(81);
 const IS_WINDOWS = process.platform === 'win32';
 /**
  * Given an array of patterns, returns an array of paths to search.
@@ -1111,7 +1111,7 @@ exports.partialMatch = partialMatch;
 
 /***/ }),
 
-/***/ 339:
+/***/ 919:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -1129,11 +1129,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const os = __importStar(__nccwpck_require__(87));
 const path = __importStar(__nccwpck_require__(622));
-const pathHelper = __importStar(__nccwpck_require__(11));
+const pathHelper = __importStar(__nccwpck_require__(131));
 const assert_1 = __importDefault(__nccwpck_require__(357));
-const minimatch_1 = __nccwpck_require__(959);
-const internal_match_kind_1 = __nccwpck_require__(119);
-const internal_path_1 = __nccwpck_require__(288);
+const minimatch_1 = __nccwpck_require__(930);
+const internal_match_kind_1 = __nccwpck_require__(81);
+const internal_path_1 = __nccwpck_require__(12);
 const IS_WINDOWS = process.platform === 'win32';
 class Pattern {
     constructor(patternOrNegate, segments, homedir) {
@@ -1359,7 +1359,7 @@ exports.Pattern = Pattern;
 
 /***/ }),
 
-/***/ 1:
+/***/ 973:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1376,7 +1376,7 @@ exports.SearchState = SearchState;
 
 /***/ }),
 
-/***/ 522:
+/***/ 819:
 /***/ ((module) => {
 
 "use strict";
@@ -1446,11 +1446,11 @@ function range(a, b, str) {
 
 /***/ }),
 
-/***/ 308:
+/***/ 190:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var concatMap = __nccwpck_require__(388);
-var balanced = __nccwpck_require__(522);
+var concatMap = __nccwpck_require__(78);
+var balanced = __nccwpck_require__(819);
 
 module.exports = expandTop;
 
@@ -1654,7 +1654,7 @@ function expand(str, isTop) {
 
 /***/ }),
 
-/***/ 388:
+/***/ 78:
 /***/ ((module) => {
 
 module.exports = function (xs, fn) {
@@ -1674,7 +1674,7 @@ var isArray = Array.isArray || function (xs) {
 
 /***/ }),
 
-/***/ 959:
+/***/ 930:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 module.exports = minimatch
@@ -1686,7 +1686,7 @@ try {
 } catch (er) {}
 
 var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {}
-var expand = __nccwpck_require__(308)
+var expand = __nccwpck_require__(190)
 
 var plTypes = {
   '!': { open: '(?:(?!(?:', close: '))[^/]*?)'},
@@ -2604,7 +2604,7 @@ function regExpEscape (s) {
 
 /***/ }),
 
-/***/ 540:
+/***/ 703:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 ;(function (sax) { // wrapper for non-node envs
@@ -4176,7 +4176,7 @@ function regExpEscape (s) {
 
 /***/ }),
 
-/***/ 398:
+/***/ 706:
 /***/ ((module) => {
 
 module.exports = {
@@ -4194,15 +4194,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ 834:
+/***/ 954:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /*jslint node:true */
 
-var xml2js = __nccwpck_require__(237);
-var xml2json = __nccwpck_require__(570);
-var js2xml = __nccwpck_require__(83);
-var json2xml = __nccwpck_require__(686);
+var xml2js = __nccwpck_require__(300);
+var xml2json = __nccwpck_require__(902);
+var js2xml = __nccwpck_require__(775);
+var json2xml = __nccwpck_require__(945);
 
 module.exports = {
   xml2js: xml2js,
@@ -4214,11 +4214,11 @@ module.exports = {
 
 /***/ }),
 
-/***/ 83:
+/***/ 775:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var helper = __nccwpck_require__(255);
-var isArray = __nccwpck_require__(398).isArray;
+var helper = __nccwpck_require__(282);
+var isArray = __nccwpck_require__(706).isArray;
 
 var currentElement, currentElementName;
 
@@ -4541,10 +4541,10 @@ module.exports = function (js, options) {
 
 /***/ }),
 
-/***/ 686:
+/***/ 945:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var js2xml = __nccwpck_require__(83);
+var js2xml = __nccwpck_require__(775);
 
 module.exports = function (json, options) {
   if (json instanceof Buffer) {
@@ -4566,10 +4566,10 @@ module.exports = function (json, options) {
 
 /***/ }),
 
-/***/ 255:
+/***/ 282:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var isArray = __nccwpck_require__(398).isArray;
+var isArray = __nccwpck_require__(706).isArray;
 
 module.exports = {
 
@@ -4616,13 +4616,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ 237:
+/***/ 300:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var sax = __nccwpck_require__(540);
+var sax = __nccwpck_require__(703);
 var expat /*= require('node-expat');*/ = { on: function () { }, parse: function () { } };
-var helper = __nccwpck_require__(255);
-var isArray = __nccwpck_require__(398).isArray;
+var helper = __nccwpck_require__(282);
+var isArray = __nccwpck_require__(706).isArray;
 
 var options;
 var pureJsParser = true;
@@ -4985,11 +4985,11 @@ module.exports = function (xml, userOptions) {
 
 /***/ }),
 
-/***/ 570:
+/***/ 902:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var helper = __nccwpck_require__(255);
-var xml2js = __nccwpck_require__(237);
+var helper = __nccwpck_require__(282);
+var xml2js = __nccwpck_require__(300);
 
 function validateOptions (userOptions) {
   var options = helper.copyOptions(userOptions);
@@ -5101,36 +5101,40 @@ module.exports = require("string_decoder");;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const core = __nccwpck_require__(24);
+const core = __nccwpck_require__(127);
 // const github = require('@actions/github');
-const glob = __nccwpck_require__(723);
-const convert = __nccwpck_require__(834);
+const glob = __nccwpck_require__(916);
+const convert = __nccwpck_require__(954);
 const fs = __nccwpck_require__(747);
 
 try {
+  // this is the default action code from the tutorial
+  // I keep it for now, as we are sure it works and runs in the CI
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  // const payload = JSON.stringify(github.context.payload, undefined, 2)
-  // console.log(`The event payload: ${payload}`);
 
-  const patterns = ['coverage.xml']
-  const globber = glob.create(patterns)
+  ///////////////////////////////////////////
+  // BELOW IS THE CODE FOR OUR REAL ACTION //
+  ///////////////////////////////////////////
+
+  // @actions/glob allow to access files in the current job workplace. See: https://github.com/actions/toolkit/tree/main/packages/glob
+  const globber = glob.create('coverage.xml')
   const file = globber.glob()
-  // try some code for real action
-  const xmlContent = fs.readFileSync(file, { encoding: 'utf8' });
 
+  // xml-js extension should ease the process to convert xml content to JSObject or json. See: https://www.npmjs.com/package/xml-js
   var options = {ignoreComment: true, alwaysChildren: true};
-  var result = convert.xml2js(xml, options);
+  var json = convert.xml2js(fs.readFileSync(file, { encoding: 'utf8' }), options);
 
-  console.log(result);
+  // this result should be a JS object containing coverage infos
+  console.log(json);
 
 } catch (error) {
   core.setFailed(error.message);
 }
+
 })();
 
 module.exports = __webpack_exports__;
