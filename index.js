@@ -4,6 +4,9 @@ const glob = require('@actions/glob');
 const convert = require('xml-js');
 const fs = require('fs');
 const process = require('process');
+const { exec } = require('child_process');
+
+const COVERAGE_BRANCH = 'coverage';
 
 const fail = (message) => {
   core.setFailed(message);
@@ -27,6 +30,25 @@ const findNode = (tree, name) => {
 
 const retrieveGlobalMetricsElement = json => findNode(findNode(findNode(json, 'coverage'), 'project'), 'metrics');
 
+const clone = (cb) => {
+  const repo = `https://${process.env.GITHUB_ACTOR}:${core.getInput('token')}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+  const cloneInto = `repo-${new Date().getTime()}`;
+
+  exec(`git clone ${repo} ${cloneInto}`, () => {
+    exec(`git branch -a`, { cwd: cloneInto }, (be, bso, bse) => {
+      const branches = bso.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', ''));
+
+      if (branches.includes(COVERAGE_BRANCH)) {
+        exec(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto }, cb);
+      } else {
+        exec(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto }, () => {
+          exec(`rm -rf .`, { cwd: cloneInto }, cb);
+        });
+      }
+    });
+  });
+};
+
 const action = async () => {
   const globber = await glob.create('coverage.xml')
   const files = await globber.glob()
@@ -43,6 +65,8 @@ const action = async () => {
   const covered = parseInt(metrics.attributes.coveredelements, 10);
   const coverage = parseFloat((100 * covered / total).toFixed(3));
   const summary = { total, covered, coverage };
+
+  clone(() => {});
 
   console.log(summary);
 };
