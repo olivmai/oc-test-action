@@ -5,22 +5,42 @@ const convert = require('xml-js');
 const fs = require('fs');
 const process = require('process');
 
+const fail = (message) => {
+  core.setFailed(message);
+  console.error(message);
+  process.exit(-1);
+};
+
+const findNode = (tree, name) => {
+  if (!tree.elements) {
+    fail('Wrong coverage file format');
+  }
+
+  const element = tree.elements.find(e => e.name === name);
+
+  if (!element) {
+    fail('Wrong coverage file format');
+  }
+
+  return element;
+}
+
+const retrieveGlobalMetricsElement = json => findNode(findNode(findNode(json, 'coverage'), 'project'), 'metrics');
+
 const action = async () => {
   const globber = await glob.create('coverage.xml')
   const files = await globber.glob()
 
   if (files.length === 0) {
-    core.setFailed(error.message);
-    console.error('Coverage file not found :/');
-    process.exit(-1);
+    fail('Coverage file not found :/');
   }
 
   // xml-js extension should ease the process to convert xml content to JSObject or json. See: https://www.npmjs.com/package/xml-js
-  var options = { ignoreComment: true, alwaysChildren: true };
-  var json = convert.xml2js(fs.readFileSync(files[0], { encoding: 'utf8' }), options);
+  const options = { ignoreComment: true, alwaysChildren: true };
+  const json = convert.xml2js(fs.readFileSync(files[0], { encoding: 'utf8' }), options);
+  const metrics = retrieveGlobalMetricsElement(json);
 
-  // this result should be a JS object containing coverage infos
-  console.log(json);
+  console.log(metrics);
 };
 
 try {
