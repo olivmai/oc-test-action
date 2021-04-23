@@ -39,8 +39,12 @@ const action = async () => {
   const options = { ignoreComment: true, alwaysChildren: true };
   const json = convert.xml2js(fs.readFileSync(files[0], { encoding: 'utf8' }), options);
   const metrics = retrieveGlobalMetricsElement(json);
+  const total = parseInt(metrics.attributes.elements, 10);
+  const covered = parseInt(metrics.attributes.coveredelements, 10);
+  const coverage = parseFloat((100 * covered / total).toFixed(3));
+  const summary = { total, covered, coverage };
 
-  console.log(metrics);
+  console.log(summary);
 };
 
 try {
