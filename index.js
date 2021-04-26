@@ -22,13 +22,14 @@ const fail = (message) => {
 const execute = (command, options) => new Promise(function(resolve, reject) {
   const cb = (error, stdout, stderr) => {
     if (error) {
-      console.error(stderr);
+      console.error(stdout, stderr);
       core.setFailed(error);
       reject(error);
 
       return;
     }
 
+    console.log(stdout);
     resolve(stdout.trim());
   };
 
