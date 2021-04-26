@@ -6875,7 +6875,7 @@ const clone = async () => {
 
   await execute(`git clone ${REPO} ${cloneInto}`);
   const list = await execute(`git branch -a`, { cwd: cloneInto });
-  const branches = list.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', ''));
+  const branches = list.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', '').trim());
 
   console.log(branches.join(','));
   if (branches.includes(COVERAGE_BRANCH)) {
