@@ -6879,6 +6879,7 @@ const clone = async () => {
 
   if (branches.includes(COVERAGE_BRANCH)) {
     await execute(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto });
+    await execute(`git pull`, { cwd: cloneInto });
   } else {
     await execute(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto });
     await execute(`rm -rf *`, { cwd: cloneInto });
@@ -6936,7 +6937,7 @@ const check = async coverage => {
 
   const coverageResult = await baseCoverageResult.json();
 
-  console.log(`Code coverage went from ${coverageResult.coverage}% to ${coverage.coverage}`);
+  console.log(`Code coverage went from ${coverageResult.coverage}% to ${coverage.coverage}%`);
 
   if (coverage.coverage < coverageResult.coverage) {
     core.setFailed('Code coverage has been degraded');
@@ -6953,23 +6954,7 @@ const action = async () => {
   }
 };
 
-try {
-  // this is the default action code from the tutorial
-  // I keep it for now, as we are sure it works and runs in the CI
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-
-  ///////////////////////////////////////////
-  // BELOW IS THE CODE FOR OUR REAL ACTION //
-  ///////////////////////////////////////////
-
-  action();
-} catch (error) {
-  core.setFailed(error.message);
-}
+action();
 
 })();
 

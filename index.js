@@ -63,6 +63,7 @@ const clone = async () => {
 
   if (branches.includes(COVERAGE_BRANCH)) {
     await execute(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto });
+    await execute(`git pull`, { cwd: cloneInto });
   } else {
     await execute(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto });
     await execute(`rm -rf *`, { cwd: cloneInto });
@@ -120,7 +121,7 @@ const check = async coverage => {
 
   const coverageResult = await baseCoverageResult.json();
 
-  console.log(`Code coverage went from ${coverageResult.coverage}% to ${coverage.coverage}`);
+  console.log(`Code coverage went from ${coverageResult.coverage}% to ${coverage.coverage}%`);
 
   if (coverage.coverage < coverageResult.coverage) {
     core.setFailed('Code coverage has been degraded');

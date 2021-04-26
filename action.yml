@@ -1,7 +1,7 @@
 name: 'Code coverage'
 description: 'Update or check your code coverage'
 inputs:
-  token:  # id of input
+  token:
     description: 'The github token'
     required: true
   coverage-file:
@@ -12,9 +12,6 @@ inputs:
     description: 'Do we want to update the base coverage, or to check it has not been degraded?'
     required: true
     default: 'update'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
 runs:
   using: 'node12'
   main: 'dist/index.js'
