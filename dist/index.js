@@ -6836,16 +6836,14 @@ const fail = (message) => {
 };
 
 const execute = (command, options) => new Promise(function(resolve, reject) {
-  const cb = (error, stdout, stderr) => {
+  const cb = (error, stdout) => {
     if (error) {
-      console.error(stdout, stderr);
       core.setFailed(error);
       reject(error);
 
       return;
     }
 
-    console.log(stdout);
     resolve(stdout.trim());
   };
 
@@ -6894,7 +6892,7 @@ const push = async (cwd) => {
   await execute('git config --local user.email zozor@openclassrooms.com', { cwd });
   await execute('git config --local user.name Zozor', { cwd });
   await execute('git add .', { cwd });
-  await execute('git commit -m "Update coverage info"', { cwd });
+  await execute('git commit -m "Update coverage info" --allow-empty', { cwd });
   await execute(`git push ${REPO} HEAD`, { cwd });
 };
 
