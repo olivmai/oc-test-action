@@ -6877,10 +6877,13 @@ const clone = async () => {
   const list = await execute(`git branch -a`, { cwd: cloneInto });
   const branches = list.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', ''));
 
+  console.log(branches.join(','));
   if (branches.includes(COVERAGE_BRANCH)) {
+    console.log('Includes branch');
     await execute(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto });
     await execute(`git pull`, { cwd: cloneInto });
   } else {
+    console.log('Does not include branch');
     await execute(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto });
     await execute(`rm -rf *`, { cwd: cloneInto });
   }
