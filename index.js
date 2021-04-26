@@ -98,7 +98,7 @@ const parseCoverage = async () => {
 const action = async () => {
   const coverage = await parseCoverage();
   const workingDir = await clone();
-  await fs.writeFile(JSON.stringify(coverage), `${workingDir}/${SUMMARY_FILE}`);
+  fs.writeFileSync(`${workingDir}/${SUMMARY_FILE}`, JSON.stringify(coverage));
   await push(workingDir);
 
   console.log(coverage);
