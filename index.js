@@ -1,15 +1,17 @@
 const core = require('@actions/core');
 // const github = require('@actions/github');
 const glob = require('@actions/glob');
-const convert = require('xml-js');
-const fs = require('fs');
-const process = require('process');
 const { exec } = require('child_process');
+const fs = require('fs');
+const fetch = require('node-fetch');
+const process = require('process');
+const convert = require('xml-js');
 
 const COVERAGE_BRANCH = 'coverage';
 const COVERAGE_FILE = core.getInput('coverage-file');
 const SUMMARY_FILE = 'coverage-summary.json';
 const REPO = `https://${process.env.GITHUB_ACTOR}:${core.getInput('token')}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+const ACTION = core.getInput('action');
 
 const fail = (message) => {
   core.setFailed(message);
@@ -95,29 +97,44 @@ const parseCoverage = async () => {
   return { total, covered, coverage };
 }
 
-const action = async () => {
-  const coverage = await parseCoverage();
+const fetchBaseCoverage = () => fetch(
+  `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/${COVERAGE_BRANCH}/${SUMMARY_FILE}`,
+  { headers: { 'Authorization': `token ${core.getInput('token')}`, 'Accept': 'application/vnd.github.v3.raw' } }
+);
+
+const update = async coverage => {
   const workingDir = await clone();
   fs.writeFileSync(`${workingDir}/${SUMMARY_FILE}`, JSON.stringify(coverage));
   await push(workingDir);
 
-  console.log(coverage);
+  console.log('Coverage successfully updated');
 };
 
-try {
-  // this is the default action code from the tutorial
-  // I keep it for now, as we are sure it works and runs in the CI
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
+const check = async coverage => {
+  const baseCoverageResult = await fetchBaseCoverage();
 
-  ///////////////////////////////////////////
-  // BELOW IS THE CODE FOR OUR REAL ACTION //
-  ///////////////////////////////////////////
+  if (baseCoverageResult.status === 404) {
+    console.log(`No base coverage found. Current coverage is ${coverage.coverage}%`);
+    return;
+  }
 
-  action();
-} catch (error) {
-  core.setFailed(error.message);
-}
+  const coverageResult = await baseCoverageResult.json();
+
+  console.log(`Code coverage went from ${coverageResult.coverage}% to ${coverage.coverage}`);
+
+  if (coverage.coverage < coverageResult.coverage) {
+    core.setFailed('Code coverage has been degraded');
+  }
+};
+
+const action = async () => {
+  try {
+    const coverage = await parseCoverage();
+
+    await (ACTION === 'update' ? update(coverage) : check(coverage));
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+};
+
+action();
