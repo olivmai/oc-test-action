@@ -5139,6 +5139,7 @@ const fail = (message) => {
 const execute = (command, options) => new Promise(function(resolve, reject) {
   const cb = (error, stdout) => {
     if (error) {
+      core.setFailed(error);
       reject(error);
 
       return;
@@ -5181,7 +5182,7 @@ const clone = async () => {
     await execute(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto });
   } else {
     await execute(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto });
-    await execute(`rm -rf .`, { cwd: cloneInto });
+    await execute(`rm -rf *`, { cwd: cloneInto });
   }
 
   return cloneInto;
