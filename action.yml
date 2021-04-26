@@ -8,6 +8,10 @@ inputs:
   token:  # id of input
     description: 'The github token'
     required: true
+  coverage-file:
+    description: 'The coverage summary at clover format'
+    required: true
+    default: 'coverage.xml'
 outputs:
   time: # id of output
     description: 'The time we greeted you'

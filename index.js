@@ -7,12 +7,33 @@ const process = require('process');
 const { exec } = require('child_process');
 
 const COVERAGE_BRANCH = 'coverage';
+const COVERAGE_FILE = core.getInput('coverage-file');
+const SUMMARY_FILE = 'coverage-summary.json';
+const REPO = `https://${process.env.GITHUB_ACTOR}:${core.getInput('token')}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
 const fail = (message) => {
   core.setFailed(message);
   console.error(message);
   process.exit(-1);
 };
+
+const execute = (command, options) => new Promise(function(resolve, reject) {
+  const cb = (error, stdout) => {
+    if (error) {
+      reject(error);
+
+      return;
+    }
+
+    resolve(stdout.trim());
+  };
+
+  if (!!options) {
+    exec(command, options, cb);
+  } else {
+    exec(command, cb);
+  }
+});
 
 const findNode = (tree, name) => {
   if (!tree.elements) {
@@ -30,45 +51,56 @@ const findNode = (tree, name) => {
 
 const retrieveGlobalMetricsElement = json => findNode(findNode(findNode(json, 'coverage'), 'project'), 'metrics');
 
-const clone = (cb) => {
-  const repo = `https://${process.env.GITHUB_ACTOR}:${core.getInput('token')}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+const clone = async () => {
   const cloneInto = `repo-${new Date().getTime()}`;
 
-  exec(`git clone ${repo} ${cloneInto}`, () => {
-    exec(`git branch -a`, { cwd: cloneInto }, (be, bso, bse) => {
-      const branches = bso.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', ''));
+  await execute(`git clone ${REPO} ${cloneInto}`);
+  const list = await execute(`git branch -a`, { cwd: cloneInto });
+  const branches = list.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', ''));
 
-      if (branches.includes(COVERAGE_BRANCH)) {
-        exec(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto }, cb);
-      } else {
-        exec(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto }, () => {
-          exec(`rm -rf .`, { cwd: cloneInto }, cb);
-        });
-      }
-    });
-  });
+  if (branches.includes(COVERAGE_BRANCH)) {
+    await execute(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto });
+  } else {
+    await execute(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto });
+    await execute(`rm -rf .`, { cwd: cloneInto });
+  }
+
+  return cloneInto;
 };
 
-const action = async () => {
-  const globber = await glob.create('coverage.xml')
-  const files = await globber.glob()
+const push = async (cwd) => {
+  await execute('git config --local user.email zozor@openclassrooms.com', { cwd });
+  await execute('git config --local user.name Zozor', { cwd });
+  await execute('git add .', { cwd });
+  await execute('git commit -m "Update coverage info"', { cwd });
+  await execute(`git push ${REPO} HEAD`, { cwd });
+};
+
+const parseCoverage = async () => {
+  const globber = await glob.create(COVERAGE_FILE);
+  const files = await globber.glob();
 
   if (files.length === 0) {
     fail('Coverage file not found :/');
   }
 
-  // xml-js extension should ease the process to convert xml content to JSObject or json. See: https://www.npmjs.com/package/xml-js
   const options = { ignoreComment: true, alwaysChildren: true };
   const json = convert.xml2js(fs.readFileSync(files[0], { encoding: 'utf8' }), options);
   const metrics = retrieveGlobalMetricsElement(json);
   const total = parseInt(metrics.attributes.elements, 10);
   const covered = parseInt(metrics.attributes.coveredelements, 10);
   const coverage = parseFloat((100 * covered / total).toFixed(3));
-  const summary = { total, covered, coverage };
 
-  clone(() => {});
+  return { total, covered, coverage };
+}
 
-  console.log(summary);
+const action = async () => {
+  const coverage = await parseCoverage();
+  const workingDir = await clone();
+  await fs.writeFile(JSON.stringify(coverage), `${workingDir}/${SUMMARY_FILE}`);
+  await push(workingDir);
+
+  console.log(coverage);
 };
 
 try {
