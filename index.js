@@ -22,6 +22,7 @@ const fail = (message) => {
 const execute = (command, options) => new Promise(function(resolve, reject) {
   const cb = (error, stdout) => {
     if (error) {
+      console.error(stdout);
       core.setFailed(error);
       reject(error);
 
@@ -61,13 +62,10 @@ const clone = async () => {
   const list = await execute(`git branch -a`, { cwd: cloneInto });
   const branches = list.split('\n').filter(b => b.length > 2).map(b => b.replace('remotes/origin/', '').trim());
 
-  console.log(branches.join(','));
   if (branches.includes(COVERAGE_BRANCH)) {
-    console.log('Includes branch');
     await execute(`git checkout ${COVERAGE_BRANCH}`, { cwd: cloneInto });
     await execute(`git pull`, { cwd: cloneInto });
   } else {
-    console.log('Does not include branch');
     await execute(`git checkout --orphan ${COVERAGE_BRANCH}`, { cwd: cloneInto });
     await execute(`rm -rf *`, { cwd: cloneInto });
   }
