@@ -10811,32 +10811,23 @@ const postMessageOnPullRequest = async message => {
 };
 
 const buildDeltaMessage = (oldCoverage, newCoverage) => {
-    return `
-        | Measure | Main branch | ${process.env.GITHUB_REF} |
-        | --- | --- | --- |
-        | Coverage | ${oldCoverage.coverage}% | ${newCoverage.coverage}% |
-        | Total lines | ${oldCoverage.total} | ${newCoverage.total} |
-        | Covered lines | ${oldCoverage.covered} | ${newCoverage.covered} |
-
-        ∆ ${newCoverage.coverage - oldCoverage.coverage}
-    `;
+    return [
+        '',
+        '| Measure | Main branch | ${process.env.GITHUB_REF} |',
+        '| --- | --- | --- |',
+        '| Coverage | ' + oldCoverage.coverage + '% | ' + newCoverage.coverage + ' |',
+        '| Total lines | ' + oldCoverage.total + ' | ' + newCoverage.total + ' |',
+        '| Covered lines | ' + oldCoverage.covered + ' | ' + newCoverage.covered + ' |',
+        '∆ ' + (newCoverage.coverage - oldCoverage.coverage).toFixed(3)
+    ].join('\n');
 }
 
 const buildFailureMessage = (oldCoverage, newCoverage) => {
-    return ':x: Your code coverage has been degraded :sob:';
-    return `
-        :x: Your code coverage has been degraded :sob:
-
-        ${buildDeltaMessage(oldCoverage, newCoverage)}
-    `;
+    return ':x: Your code coverage has been degraded :sob:' + buildDeltaMessage(oldCoverage, newCoverage);
 };
 
 const buildSuccessMessage = (oldCoverage, newCoverage) => {
-    return `
-        :white_check_mark: Your code coverage has not been degraded :tada:
-
-        ${buildDeltaMessage(oldCoverage, newCoverage)}
-    `;
+    return ':white_check_mark: Your code coverage has not been degraded :tada:' + buildDeltaMessage(oldCoverage, newCoverage);
 };
 
 const update = async coverage => {
