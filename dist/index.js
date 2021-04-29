@@ -10823,6 +10823,7 @@ const buildDeltaMessage = (oldCoverage, newCoverage) => {
 }
 
 const buildFailureMessage = (oldCoverage, newCoverage) => {
+    return ':x: Your code coverage has been degraded :sob:';
     return `
         :x: Your code coverage has been degraded :sob:
 
