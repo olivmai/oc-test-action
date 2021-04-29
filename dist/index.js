@@ -10813,11 +10813,12 @@ const postMessageOnPullRequest = async message => {
 const buildDeltaMessage = (oldCoverage, newCoverage) => {
     return [
         '',
-        '| Measure | Main branch | ${process.env.GITHUB_REF} |',
+        '| Measure | Main branch | ' + process.env.GITHUB_REF + ' |',
         '| --- | --- | --- |',
-        '| Coverage | ' + oldCoverage.coverage + '% | ' + newCoverage.coverage + ' |',
+        '| Coverage | ' + oldCoverage.coverage + '% | ' + newCoverage.coverage + '% |',
         '| Total lines | ' + oldCoverage.total + ' | ' + newCoverage.total + ' |',
         '| Covered lines | ' + oldCoverage.covered + ' | ' + newCoverage.covered + ' |',
+        '',
         '∆ ' + (newCoverage.coverage - oldCoverage.coverage).toFixed(3)
     ].join('\n');
 }
