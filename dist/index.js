@@ -10802,7 +10802,7 @@ const postMessageOnPullRequest = async message => {
     }
 
     const pullRequestNumber = context.payload.pull_request.number;
-    const octokit = new github.GitHub(TOKEN);
+    const octokit = new github.getOctokit(TOKEN);
     await octokit.issues.createComment({
        ...context.repo,
        issue_number: pullRequestNumber,
@@ -10815,8 +10815,8 @@ const buildDeltaMessage = (oldCoverage, newCoverage) => {
         | Measure | Main branch | ${process.env.GITHUB_REF} |
         | --- | --- | --- |
         | Coverage | ${oldCoverage.coverage}% | ${newCoverage.coverage}% |
-        | Total lines | ${oldCoverage.total}% | ${newCoverage.total}% |
-        | Covered lines | ${oldCoverage.covered}% | ${newCoverage.covered}% |
+        | Total lines | ${oldCoverage.total} | ${newCoverage.total} |
+        | Covered lines | ${oldCoverage.covered} | ${newCoverage.covered} |
 
         ∆ ${newCoverage.coverage - oldCoverage.coverage}
     `;
